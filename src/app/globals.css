@@ -1,7 +1,41 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #05080f; color: #c8d3e8; }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1e2d40; border-radius: 3px; }
+/* ── MOBİL UYUMLULUK ── */
+@media (max-width: 768px) {
+  /* Sidebar gizle */
+  .qa-sidebar {
+    width: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+    flex-shrink: 0;
+  }
+  /* Mobil menü butonu göster */
+  .qa-mobile-menu-btn {
+    display: flex !important;
+  }
+  /* Header padding azalt */
+  header {
+    padding: 0 8px !important;
+    gap: 4px !important;
+  }
+  /* Input alanları tam genişlik */
+  textarea, input[type="text"] {
+    font-size: 16px !important; /* iOS zoom engelle */
+  }
+  /* Sonuç kartları padding azalt */
+  .qa-results {
+    padding: 8px !important;
+  }
+}
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 480px) {
+  /* Nav text gizle, sadece ikon göster */
+  .qa-nav-text {
+    display: none !important;
+  }
+  /* Buton metinleri kısalt */
+  .qa-btn-text {
+    display: none !important;
+  }
+}

@@ -2552,6 +2552,7 @@ export default function Home(){
     {id:'learning', label:'🧠',  text:'AI Öğrenim'},
   ]
   const [navCollapsed,setNavCollapsed]=useState(false)
+  const [mobileSidebar,setMobileSidebar]=useState(false)
 
   // Splash aktifken app arkada hazır bekliyor (görünmez), geçiş kesintisiz
   const appVisible = !splash
@@ -2562,6 +2563,14 @@ export default function Home(){
       <div style={{height:'100vh',background:C.bg0,opacity:appVisible?1:0,transition:appVisible?'opacity .3s ease .1s':'none',pointerEvents:appVisible?'auto':'none',color:C.t1,fontFamily:"'Segoe UI',system-ui,-apple-system,sans-serif",display:'flex',flexDirection:'column',overflow:'hidden'}}>
       <style>{`
         @keyframes qa-spin{to{transform:rotate(360deg)}}
+        @media (max-width:768px){
+          .qa-sidebar{width:0!important;overflow:hidden!important;border:none!important}
+          .qa-mobile-menu-btn{display:flex!important}
+          .qa-mobile-overlay{display:block!important}
+        }
+        @media (max-width:480px){
+          .qa-header-nav{display:none!important}
+        }
         @keyframes tabOut { 0%{opacity:1;transform:scale(1);filter:blur(0px)} 100%{opacity:0;transform:scale(1.12);filter:blur(14px)} }
         @keyframes tabIn  { 0%{opacity:0} 100%{opacity:1} }
         *{box-sizing:border-box;margin:0;padding:0}
@@ -2574,6 +2583,10 @@ export default function Home(){
 
       {/* ── TOPBAR ── */}
       <header style={{height:52,background:C.bg1,borderBottom:`1px solid ${C.b0}`,display:'flex',alignItems:'center',padding:'0 16px',gap:8,flexShrink:0,zIndex:10}}>
+        {/* Mobil menü butonu */}
+        <button onClick={()=>setMobileSidebar(v=>!v)}
+          style={{display:'none',width:34,height:34,borderRadius:7,border:`1px solid ${C.b0}`,background:'transparent',color:C.t2,cursor:'pointer',fontSize:16,alignItems:'center',justifyContent:'center',flexShrink:0}}
+          className="qa-mobile-menu-btn">☰</button>
         {/* Logo */}
         <div style={{display:'flex',alignItems:'center',gap:7,paddingRight:12,borderRight:`1px solid ${C.b0}`}}>
           <span style={{fontWeight:900,fontSize:15,letterSpacing:-.5,background:'linear-gradient(135deg,#fbbf24,#f59e0b)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>QAI</span>
@@ -2614,7 +2627,7 @@ export default function Home(){
                     onMouseEnter={e=>{if(tab!==t.id){e.currentTarget.style.color=C.t2;e.currentTarget.style.background='rgba(255,255,255,0.03)'}}}
                     onMouseLeave={e=>{if(tab!==t.id){e.currentTarget.style.color=C.t3;e.currentTarget.style.background='transparent'}}}>
                     <span style={{fontSize:14}}>{t.label}</span>
-                    <span>{t.text}</span>
+                    <span className="qa-nav-text">{t.text}</span>
                     {t.id==='manager'&&customTools.length>0&&<Tag color={C.blue}>{customTools.length}</Tag>}
                   </button>
                 ))}
@@ -2660,7 +2673,9 @@ export default function Home(){
         <div style={{display:'flex',flex:1,overflow:'hidden',animation:tabTransition?'tabOut .18s ease forwards':'tabIn .18s ease'}}>
 
           {/* Sidebar */}
-          <aside style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+          {/* Mobil overlay */}
+          {mobileSidebar&&<div onClick={()=>setMobileSidebar(false)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:99,display:'none'}} className="qa-mobile-overlay"/>}
+          <aside className="qa-sidebar" style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
             {/* Search */}
             <div style={{padding:'10px 10px 8px'}}>
               <TextInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Araç ara..." sx={{fontSize:12}}/>
@@ -2735,7 +2750,7 @@ export default function Home(){
             </div>
 
             {/* Results */}
-            <div style={{flex:1,overflowY:'auto',padding:'16px 18px'}}>
+            <div className="qa-results" style={{flex:1,overflowY:'auto',padding:'16px 18px'}}>
               {results.length===0&&!running&&(
                 <div style={{textAlign:'center',padding:'64px 0',color:C.t3}}>
                   <div style={{fontSize:44,marginBottom:12,opacity:.25}}>🧪</div>
