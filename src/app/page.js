@@ -1671,7 +1671,7 @@ Türkçe, somut ve uygulanabilir yanıt ver.`}])
   return(
     <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
       {/* Süreç listesi */}
-      <div style={{width:300,flexShrink:0,borderRight:`1px solid ${C.b0}`,overflowY:'auto',background:C.bg1}}>
+      <div className={mobileDrawer?'qa-drawer open':'qa-drawer'} style={{width:300,flexShrink:0,borderRight:`1px solid ${C.b0}`,overflowY:'auto',background:C.bg1}}>
         <div style={{padding:'14px 16px',borderBottom:`1px solid ${C.b0}`,display:'flex',alignItems:'center',gap:8}}>
           <span style={{fontSize:13,fontWeight:700,color:C.t0,flex:1}}>🔀 Test Süreçleri</span>
           <BtnGhost size="sm" onClick={()=>{setEditItem({id:Date.now(),name:'',responsible:'',next:'',desc:''});setEditMode(true)}}>+ Ekle</BtnGhost>
@@ -1897,7 +1897,7 @@ function DefenseTab(){
   return(
     <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
       {/* Sol menü */}
-      <div style={{width:200,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,overflowY:'auto'}}>
+      <div className={mobileDrawer?'qa-drawer open':'qa-drawer'} style={{width:200,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,overflowY:'auto'}}>
         <div style={{padding:'12px 14px',borderBottom:`1px solid ${C.b0}`}}>
           <div style={{fontSize:13,fontWeight:800,color:C.t0}}>🛡️ Savunma Sanayii</div>
           <div style={{fontSize:10,color:C.t3,marginTop:2}}>Sistem & Yazılım Test Müh.</div>
@@ -2134,7 +2134,7 @@ function LearningTab(){
     <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
 
       {/* Sol panel */}
-      <div style={{width:230,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      <div className={mobileDrawer?'qa-drawer open':'qa-drawer'} style={{width:230,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
         {/* Baslik */}
         <div style={{padding:'14px 16px',borderBottom:`1px solid ${C.b0}`,flexShrink:0}}>
           <div style={{fontSize:13,fontWeight:800,color:C.t0}}>🧠 AI Ogrenim</div>
@@ -2402,7 +2402,7 @@ function AssistantTab(){
   return(
     <div style={{display:'flex',height:'100%',background:C.bg0}}>
       {/* Sidebar */}
-      <div style={{width:210,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',flexShrink:0}}>
+      <div className={mobileDrawer?'qa-drawer open':'qa-drawer'} style={{width:210,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',flexShrink:0}}>
         <div style={{padding:'12px 10px'}}>
           <BtnPrimary onClick={newSession} sx={{width:'100%',justifyContent:'center'}}>+ Yeni Sohbet</BtnPrimary>
         </div>
@@ -2535,6 +2535,7 @@ export default function Home(){
 
   const switchTab=(id)=>{
     if(id===tab) return
+    setMobileDrawer(false)
     setTabTransition(true)
     setTimeout(()=>{
       setTab(id)
@@ -2552,7 +2553,7 @@ export default function Home(){
     {id:'learning', label:'🧠',  text:'AI Öğrenim'},
   ]
   const [navCollapsed,setNavCollapsed]=useState(false)
-  const [mobileSidebar,setMobileSidebar]=useState(false)
+  const [mobileDrawer,setMobileDrawer]=useState(false)
 
   // Splash aktifken app arkada hazır bekliyor (görünmez), geçiş kesintisiz
   const appVisible = !splash
@@ -2560,7 +2561,7 @@ export default function Home(){
   return(
     <>
       {/* App — splash geçişi biterken arkada hazır */}
-      <div style={{height:'100vh',background:C.bg0,opacity:appVisible?1:0,transition:appVisible?'opacity .3s ease .1s':'none',pointerEvents:appVisible?'auto':'none',color:C.t1,fontFamily:"'Segoe UI',system-ui,-apple-system,sans-serif",display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      <div className="qa-app-content" style={{height:'100vh',background:C.bg0,opacity:appVisible?1:0,transition:appVisible?'opacity .3s ease .1s':'none',pointerEvents:appVisible?'auto':'none',color:C.t1,fontFamily:"'Segoe UI',system-ui,-apple-system,sans-serif",display:'flex',flexDirection:'column',overflow:'hidden'}}>
       <style>{`
         @keyframes qa-spin{to{transform:rotate(360deg)}}
         @media (max-width:768px){
@@ -2583,11 +2584,11 @@ export default function Home(){
       `}</style>
 
       {/* ── TOPBAR ── */}
-      <header style={{height:52,background:C.bg1,borderBottom:`1px solid ${C.b0}`,display:'flex',alignItems:'center',padding:'0 16px',gap:8,flexShrink:0,zIndex:10}}>
+      <header className="qa-topbar" style={{height:52,background:C.bg1,borderBottom:`1px solid ${C.b0}`,display:'flex',alignItems:'center',padding:'0 16px',gap:8,flexShrink:0,zIndex:10}}>
         {/* Mobil menü butonu */}
         <button onClick={()=>setMobileSidebar(v=>!v)}
-          style={{display:'none',width:36,height:36,borderRadius:8,border:`1px solid ${mobileSidebar?C.blue:C.b1}`,background:mobileSidebar?'rgba(59,158,237,0.1)':'transparent',color:mobileSidebar?C.blue:C.t2,cursor:'pointer',fontSize:18,alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all .2s'}}
-          className="qa-mobile-menu-btn">{mobileSidebar?'✕':'☰'}</button>
+          style={{display:'none',width:36,height:36,borderRadius:8,border:`1px solid ${mobileDrawer?C.blue:C.b1}`,background:mobileDrawer?'rgba(59,158,237,0.1)':'transparent',color:mobileDrawer?C.blue:C.t2,cursor:'pointer',fontSize:18,alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all .2s'}}
+          className="qa-mobile-menu-btn">{mobileDrawer?'✕':'☰'}</button>
         {/* Logo */}
         <div style={{display:'flex',alignItems:'center',gap:7,paddingRight:12,borderRight:`1px solid ${C.b0}`}}>
           <span style={{fontWeight:900,fontSize:15,letterSpacing:-.5,background:'linear-gradient(135deg,#fbbf24,#f59e0b)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>QAI</span>
@@ -2606,7 +2607,7 @@ export default function Home(){
 
           {/* Açık mod — sol/sağ butonlu kaydırma */}
           {!navCollapsed&&(
-            <div style={{display:'flex',alignItems:'center',flex:1,minWidth:0,position:'relative'}}>
+            <div className="qa-topbar-nav" style={{display:'flex',alignItems:'center',flex:1,minWidth:0,position:'relative'}}>
               {/* Sol ok */}
               <button
                 className='qa-nav-arrow' onClick={()=>{const el=document.getElementById('qa-nav');if(el)el.scrollBy({left:-120,behavior:'smooth'})}}
@@ -2674,8 +2675,8 @@ export default function Home(){
         <div style={{display:'flex',flex:1,overflow:'hidden',animation:tabTransition?'tabOut .18s ease forwards':'tabIn .18s ease'}}>
 
           {/* Sidebar */}
-          {mobileSidebar&&<div onClick={()=>setMobileSidebar(false)} className="qa-mobile-overlay"/>}
-          <aside className={mobileSidebar?'qa-sidebar open':'qa-sidebar'} style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+          {mobileDrawer&&<div onClick={()=>setMobileSidebar(false)} className={mobileDrawer?"qa-drawer-overlay open":"qa-drawer-overlay"}/>}
+          <aside className={mobileDrawer?'qa-drawer open':'qa-drawer'} style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
             {/* Search */}
             <div style={{padding:'10px 10px 8px'}}>
               <TextInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Araç ara..." sx={{fontSize:12}}/>
@@ -2805,6 +2806,23 @@ export default function Home(){
           </div>
         </div>
       )}
+      {/* ── MOBİL ALT NAV ── */}
+      <nav className="qa-bottom-nav">
+        {TABS.map(t=>(
+          <button key={t.id} onClick={()=>{switchTab(t.id);setMobileDrawer(false)}}
+            style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:3,
+              border:'none',background:'transparent',cursor:'pointer',fontFamily:'inherit',
+              color:tab===t.id?C.blue:C.t3,transition:'color .15s',padding:'6px 2px'}}>
+            <span style={{fontSize:20,lineHeight:1}}>{t.label}</span>
+            <span style={{fontSize:9,fontWeight:600,letterSpacing:.3,textTransform:'uppercase',lineHeight:1}}>{t.text.split(' ')[0]}</span>
+            {tab===t.id&&<div style={{width:20,height:2,borderRadius:2,background:C.blue,marginTop:1}}/>}
+          </button>
+        ))}
+      </nav>
+
+      {/* Drawer overlay — tüm sekmeler için */}
+      {mobileDrawer&&<div className="qa-drawer-overlay open" onClick={()=>setMobileDrawer(false)}/>}
+
       {confirm&&<ConfirmDialog message={confirm.message} onConfirm={confirm.onConfirm} onCancel={()=>setConfirm(null)}/>}
       {tab==='assistant'&&<div style={{flex:1,overflow:'hidden',animation:tabTransition?'tabOut .18s ease forwards':'tabIn .18s ease'}}><AssistantTab/></div>}
       {tab==='process'&&<div style={{flex:1,overflow:'hidden',animation:tabTransition?'tabOut .18s ease forwards':'tabIn .18s ease'}}><ProcessTab/></div>}

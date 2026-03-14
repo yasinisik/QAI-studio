@@ -1,64 +1,92 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #05080f; color: #c8d3e8; }
 
-/* ── MOBİL DRAWER & LAYOUT ── */
+/* ── MOBILE BOTTOM NAV ── */
+.qa-bottom-nav {
+  display: none;
+}
+
+/* ── MOBILE DRAWER ── */
+.qa-drawer {
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+
 @media (max-width: 768px) {
 
-  /* Input zoom engelle (iOS) */
-  input, textarea, select {
-    font-size: 16px !important;
+  /* Alt navigasyon bar */
+  .qa-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 58px;
+    background: #090d18;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    z-index: 300;
+    align-items: stretch;
   }
 
-  /* Buton minimum dokunma alanı */
-  button {
-    min-height: 36px;
+  /* Üst header daha küçük */
+  .qa-topbar { padding: 0 10px !important; }
+
+  /* İçerik alanı alt navdan yukarıda kalsın */
+  .qa-app-content {
+    padding-bottom: 58px !important;
   }
 
-  /* Preset paket butonları wrap */
-  .qa-presets {
-    flex-wrap: wrap !important;
+  /* Sol paneller - drawer olarak */
+  .qa-drawer {
+    position: fixed !important;
+    left: 0 !important;
+    top: 52px !important;
+    bottom: 58px !important;
+    width: 80vw !important;
+    max-width: 300px !important;
+    z-index: 250 !important;
+    transform: translateX(-100%) !important;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.7) !important;
+    flex-shrink: 0 !important;
+    overflow-y: auto !important;
+  }
+  .qa-drawer.open {
+    transform: translateX(0) !important;
   }
 
-  /* Result card header wrap */
-  .qa-result-header {
-    flex-wrap: wrap !important;
-    gap: 6px !important;
+  /* Drawer overlay */
+  .qa-drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 52px;
+    bottom: 58px;
+    background: rgba(0,0,0,0.6);
+    z-index: 249;
+    backdrop-filter: blur(2px);
+  }
+  .qa-drawer-overlay.open {
+    display: block;
   }
 
-  /* Dashboard grid tek kolon */
-  .qa-stat-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
+  /* Üst nav gizle, alt nav kullan */
+  .qa-topbar-nav { display: none !important; }
 
-  /* Tool type accordion tam genişlik */
-  .qa-tooltype-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
+  /* Desktop nav ok butonları gizle */
+  .qa-nav-arrow { display: none !important; }
 
-  /* Input panel padding azalt */
-  .qa-input-panel {
-    padding: 10px 12px !important;
-  }
+  /* iOS zoom engelle */
+  input, textarea, select { font-size: 16px !important; }
 
-  /* Nav scroll ok butonları gizle dar ekranda */
-  .qa-nav-arrow {
-    display: none !important;
-  }
+  /* Padding azalt */
+  .qa-input-panel { padding: 10px 12px !important; }
+  .qa-results { padding: 10px 12px !important; }
+
+  /* Stat grid 2 kolon */
+  .qa-stat-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ToolType grid 2 kolon */
+  .qa-tooltype-grid { grid-template-columns: 1fr 1fr !important; }
 }
 
 @media (max-width: 480px) {
-  /* Stat grid tek kolon */
-  .qa-stat-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Header logo kısa */
-  .qa-logo-text {
-    display: none !important;
-  }
-
-  /* Sidebar tam ekran */
-  .qa-sidebar {
-    width: 100vw !important;
-  }
+  .qa-stat-grid { grid-template-columns: 1fr !important; }
+  .qa-drawer { width: 88vw !important; }
 }
