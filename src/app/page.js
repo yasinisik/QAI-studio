@@ -1187,7 +1187,7 @@ function DashboardTab({usageStats, allTools, bugs, setBugs}){
       <div style={{padding:'20px 24px',maxWidth:1200,margin:'0 auto'}}>
 
         {/* Stat row */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:12,marginBottom:20}}>
+        <div className='qa-stat-grid' style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:12,marginBottom:20}}>
           {[
             {icon:'🐛',label:'Toplam Bug',val:total,color:C.red,sub:`${openCount} açık`},
             {icon:'🔴',label:'Aktif High+',val:highCount,color:'#ff4040',sub:'çözülmemiş'},
@@ -2564,12 +2564,13 @@ export default function Home(){
       <style>{`
         @keyframes qa-spin{to{transform:rotate(360deg)}}
         @media (max-width:768px){
-          .qa-sidebar{width:0!important;overflow:hidden!important;border:none!important}
-          .qa-mobile-menu-btn{display:flex!important}
-          .qa-mobile-overlay{display:block!important}
+          .qa-sidebar{ position:fixed!important; left:-285px!important; top:52px!important; bottom:0!important; width:280px!important; z-index:200!important; transition:left .28s cubic-bezier(.4,0,.2,1)!important; box-shadow:4px 0 24px rgba(0,0,0,0.6)!important; }
+          .qa-sidebar.open{ left:0!important; }
+          .qa-mobile-menu-btn{ display:flex!important; }
+          .qa-mobile-overlay{ display:block!important; position:fixed!important; inset:0!important; top:52px!important; background:rgba(0,0,0,0.55)!important; z-index:199!important; }
+          .qa-main{ width:100%!important; }
+          .qa-nav-text{ display:none!important; }
         }
-        @media (max-width:480px){
-          .qa-header-nav{display:none!important}
         }
         @keyframes tabOut { 0%{opacity:1;transform:scale(1);filter:blur(0px)} 100%{opacity:0;transform:scale(1.12);filter:blur(14px)} }
         @keyframes tabIn  { 0%{opacity:0} 100%{opacity:1} }
@@ -2585,12 +2586,12 @@ export default function Home(){
       <header style={{height:52,background:C.bg1,borderBottom:`1px solid ${C.b0}`,display:'flex',alignItems:'center',padding:'0 16px',gap:8,flexShrink:0,zIndex:10}}>
         {/* Mobil menü butonu */}
         <button onClick={()=>setMobileSidebar(v=>!v)}
-          style={{display:'none',width:34,height:34,borderRadius:7,border:`1px solid ${C.b0}`,background:'transparent',color:C.t2,cursor:'pointer',fontSize:16,alignItems:'center',justifyContent:'center',flexShrink:0}}
-          className="qa-mobile-menu-btn">☰</button>
+          style={{display:'none',width:36,height:36,borderRadius:8,border:`1px solid ${mobileSidebar?C.blue:C.b1}`,background:mobileSidebar?'rgba(59,158,237,0.1)':'transparent',color:mobileSidebar?C.blue:C.t2,cursor:'pointer',fontSize:18,alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all .2s'}}
+          className="qa-mobile-menu-btn">{mobileSidebar?'✕':'☰'}</button>
         {/* Logo */}
         <div style={{display:'flex',alignItems:'center',gap:7,paddingRight:12,borderRight:`1px solid ${C.b0}`}}>
           <span style={{fontWeight:900,fontSize:15,letterSpacing:-.5,background:'linear-gradient(135deg,#fbbf24,#f59e0b)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>QAI</span>
-          <span style={{fontWeight:800,fontSize:15,color:C.t0,letterSpacing:-.3,marginLeft:4}}>Studio</span>
+          <span className="qa-logo-text" style={{fontWeight:800,fontSize:15,color:C.t0,letterSpacing:-.3,marginLeft:4}}>Studio</span>
         </div>
 
         {/* Nav tabs — scrollable + collapse */}
@@ -2608,7 +2609,7 @@ export default function Home(){
             <div style={{display:'flex',alignItems:'center',flex:1,minWidth:0,position:'relative'}}>
               {/* Sol ok */}
               <button
-                onClick={()=>{const el=document.getElementById('qa-nav');if(el)el.scrollBy({left:-120,behavior:'smooth'})}}
+                className='qa-nav-arrow' onClick={()=>{const el=document.getElementById('qa-nav');if(el)el.scrollBy({left:-120,behavior:'smooth'})}}
                 style={{flexShrink:0,width:22,height:28,borderRadius:5,border:`1px solid ${C.b0}`,background:C.bg2,color:C.t3,cursor:'pointer',fontSize:11,display:'flex',alignItems:'center',justifyContent:'center',marginRight:2,zIndex:1}}
                 onMouseEnter={e=>{e.currentTarget.style.color=C.t1;e.currentTarget.style.background=C.bg3}}
                 onMouseLeave={e=>{e.currentTarget.style.color=C.t3;e.currentTarget.style.background=C.bg2}}>‹</button>
@@ -2634,7 +2635,7 @@ export default function Home(){
               </nav>
               {/* Sağ ok */}
               <button
-                onClick={()=>{const el=document.getElementById('qa-nav');if(el)el.scrollBy({left:120,behavior:'smooth'})}}
+                className='qa-nav-arrow' onClick={()=>{const el=document.getElementById('qa-nav');if(el)el.scrollBy({left:120,behavior:'smooth'})}}
                 style={{flexShrink:0,width:22,height:28,borderRadius:5,border:`1px solid ${C.b0}`,background:C.bg2,color:C.t3,cursor:'pointer',fontSize:11,display:'flex',alignItems:'center',justifyContent:'center',marginLeft:2}}
                 onMouseEnter={e=>{e.currentTarget.style.color=C.t1;e.currentTarget.style.background=C.bg3}}
                 onMouseLeave={e=>{e.currentTarget.style.color=C.t3;e.currentTarget.style.background=C.bg2}}>›</button>
@@ -2673,9 +2674,8 @@ export default function Home(){
         <div style={{display:'flex',flex:1,overflow:'hidden',animation:tabTransition?'tabOut .18s ease forwards':'tabIn .18s ease'}}>
 
           {/* Sidebar */}
-          {/* Mobil overlay */}
-          {mobileSidebar&&<div onClick={()=>setMobileSidebar(false)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:99,display:'none'}} className="qa-mobile-overlay"/>}
-          <aside className="qa-sidebar" style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+          {mobileSidebar&&<div onClick={()=>setMobileSidebar(false)} className="qa-mobile-overlay"/>}
+          <aside className={mobileSidebar?'qa-sidebar open':'qa-sidebar'} style={{width:268,flexShrink:0,borderRight:`1px solid ${C.b0}`,background:C.bg1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
             {/* Search */}
             <div style={{padding:'10px 10px 8px'}}>
               <TextInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Araç ara..." sx={{fontSize:12}}/>
@@ -2716,7 +2716,7 @@ export default function Home(){
           {/* Main content */}
           <main style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
             {/* Input panel */}
-            <div style={{padding:'14px 18px',borderBottom:`1px solid ${C.b0}`,background:C.bg1,flexShrink:0}}>
+            <div className='qa-input-panel' style={{padding:'14px 18px',borderBottom:`1px solid ${C.b0}`,background:C.bg1,flexShrink:0}}>
 
               <ICDPanel icdContent={icdContent} setIcdContent={setIcd}/>
 

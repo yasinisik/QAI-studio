@@ -1,41 +1,64 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #05080f; color: #c8d3e8; }
 
-/* ── MOBİL UYUMLULUK ── */
+/* ── MOBİL DRAWER & LAYOUT ── */
 @media (max-width: 768px) {
-  /* Sidebar gizle */
-  .qa-sidebar {
-    width: 0 !important;
-    overflow: hidden !important;
-    border: none !important;
-    flex-shrink: 0;
+
+  /* Input zoom engelle (iOS) */
+  input, textarea, select {
+    font-size: 16px !important;
   }
-  /* Mobil menü butonu göster */
-  .qa-mobile-menu-btn {
-    display: flex !important;
+
+  /* Buton minimum dokunma alanı */
+  button {
+    min-height: 36px;
   }
-  /* Header padding azalt */
-  header {
-    padding: 0 8px !important;
-    gap: 4px !important;
+
+  /* Preset paket butonları wrap */
+  .qa-presets {
+    flex-wrap: wrap !important;
   }
-  /* Input alanları tam genişlik */
-  textarea, input[type="text"] {
-    font-size: 16px !important; /* iOS zoom engelle */
+
+  /* Result card header wrap */
+  .qa-result-header {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
   }
-  /* Sonuç kartları padding azalt */
-  .qa-results {
-    padding: 8px !important;
+
+  /* Dashboard grid tek kolon */
+  .qa-stat-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Tool type accordion tam genişlik */
+  .qa-tooltype-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Input panel padding azalt */
+  .qa-input-panel {
+    padding: 10px 12px !important;
+  }
+
+  /* Nav scroll ok butonları gizle dar ekranda */
+  .qa-nav-arrow {
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
-  /* Nav text gizle, sadece ikon göster */
-  .qa-nav-text {
+  /* Stat grid tek kolon */
+  .qa-stat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Header logo kısa */
+  .qa-logo-text {
     display: none !important;
   }
-  /* Buton metinleri kısalt */
-  .qa-btn-text {
-    display: none !important;
+
+  /* Sidebar tam ekran */
+  .qa-sidebar {
+    width: 100vw !important;
   }
 }
